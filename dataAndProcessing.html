@@ -24,7 +24,7 @@
         <h1 class="title">
          D&P
         </h1>
-       
+
       </div>
     </div>
 
@@ -114,26 +114,167 @@
       <p>
         For this project we will use data from the data.sfgov.org website and we will filter it down <br>
         to the USF/Lone Mountain area 2012-2018 the link to the data can be found at <a href="https://data.sfgov.org/Public-Safety/Fire-Department-Calls-for-Service/nuek-vuh3/data">Here</a>
+        We have filtered the data so that it only includes observations from the "Lone Mountain/USF" neighborhood
+        from 01/01/2012 to 12/31/2018.
       </p>
+
+      <p>
+        This is a snippet of the R code that Nico used to transform the data for his visualization.
+      </p>
+
+
+      <pre><code class="language-css">library(plyr)
+library(dplyr)
+library(tidyr)
+library(data.table)
+
+getwd()
+setwd("/Users/nicoshiro/Downloads")
+
+fire <- read.csv("Fire_Department_Calls_for_Service.csv")
+
+fire_unique <- fire %>% distinct(Call.Number, .keep_all = TRUE)
+
+fire_unique <- fire_unique[order(fire_unique$On.Scene.DtTm), ]
+row.names(fire_unique) <- 1:nrow(fire_unique)
+fire_unique <- fire_unique[1470:10904,]
+
+fire_unique <- fire_unique[order(fire_unique$Call.Number), ]
+
+row.names(fire_unique) <- 1:nrow(fire_unique)
+
+fus <- subset(fire_unique, select = c(Call.Number, Call.Date, Received.DtTm, On.Scene.DtTm))
+
+
+fus$Received.DtTm <- substr(fus$Received.DtTm, 12, 22)
+fus$On.Scene.DtTm <- substr(fus$On.Scene.DtTm, 12, 22)
+
+
+for (i in 1:9435) {
+  if (substr(fus$Received.DtTm[i], 10, 11) == "AM" && substr(fus$Received.DtTm[i], 1, 2) == "12"){
+    fus$Received.DtTm[i] <- gsub("12", "00", fus$Received.DtTm[i])
+  }
+
+  if (substr(fus$On.Scene.DtTm[i], 10, 11) == "AM" && substr(fus$On.Scene.DtTm[i], 1, 2) == "12"){
+    fus$On.Scene.DtTm[i] <- gsub("12", "00", fus$On.Scene.DtTm[i])
+  }
+}
+
+for (i in 1:9435) {
+  if (substr(fus$Received.DtTm[i], 10, 11) == "PM"){
+    fus$Received.DtTm[i] <- substr(fus$Received.DtTm[i], 1, 8)
+    fus$On.Scene.DtTm[i] <- substr(fus$On.Scene.DtTm[i], 1, 8)
+
+    fus$Received.DtTm[i] <- paste(substr(fus$Received.DtTm[i], 1, 2), substr(fus$Received.DtTm[i], 4, 5), substr(fus$Received.DtTm[i], 7, 8), sep = "")
+    fus$On.Scene.DtTm[i] <- paste(substr(fus$On.Scene.DtTm[i], 1, 2), substr(fus$On.Scene.DtTm[i], 4, 5), substr(fus$On.Scene.DtTm[i], 7, 8), sep = "")
+
+    fus$Received.DtTm[i] <- as.integer(fus$Received.DtTm[i]) + 120000
+    fus$On.Scene.DtTm[i] <- as.integer(fus$On.Scene.DtTm[i]) + 120000
+
+  } else{
+    fus$Received.DtTm[i] <- substr(fus$Received.DtTm[i], 1, 8)
+    fus$On.Scene.DtTm[i] <- substr(fus$On.Scene.DtTm[i], 1, 8)
+
+    fus$Received.DtTm[i] <- paste(substr(fus$Received.DtTm[i], 1, 2), substr(fus$Received.DtTm[i], 4, 5), substr(fus$Received.DtTm[i], 7, 8), sep = "")
+    fus$On.Scene.DtTm[i] <- paste(substr(fus$On.Scene.DtTm[i], 1, 2), substr(fus$On.Scene.DtTm[i], 4, 5), substr(fus$On.Scene.DtTm[i], 7, 8), sep = "")
+  }
+}
+
+for (i in 1:9435) {
+  if (substr(fus$Received.DtTm[i], 1, 2) == "24"){
+    fus$Received.DtTm[i] <- gsub("24", "12", fus$Received.DtTm[i])
+  }
+
+  if (substr(fus$On.Scene.DtTm[i], 1, 2) == "24"){
+    fus$On.Scene.DtTm[i] <- gsub("24", "12", fus$On.Scene.DtTm[i])
+  }
+}
+
+fus$Received.Hr <- substr(fus$Received.DtTm, 1, 2)
+fus$Received.Mn <- substr(fus$Received.DtTm, 3, 4)
+fus$Received.Sc <- substr(fus$Received.DtTm, 5, 6)
+
+fus$On.Scene.Hr <- substr(fus$On.Scene.DtTm, 1, 2)
+fus$On.Scene.Mn <- substr(fus$On.Scene.DtTm, 3, 4)
+fus$On.Scene.Sc <- substr(fus$On.Scene.DtTm, 5, 6)
+
+fus$Received.Time.New <- paste(fus$Received.Hr, fus$Received.Mn, fus$Received.Sc, sep = ":")
+fus$On.Scene.Time.New <- paste(fus$On.Scene.Hr, fus$On.Scene.Mn, fus$On.Scene.Sc, sep = ":")
+
+fus$Received.DateTime.New <- paste(fus$Call.Date, fus$Received.Time.New, sep = " ")
+fus$On.Scene.DateTime.New <- paste(fus$Call.Date, fus$On.Scene.Time.New, sep = " ")
+
+
+
+fus$Received.DtTm <- as.POSIXct(fus$Received.DateTime.New, format="%m/%d/%Y %H:%M:%S")
+fus$On.Scene.DtTm <- as.POSIXct(fus$On.Scene.DateTime.New, format="%m/%d/%Y %H:%M:%S")
+
+fus$Wait.Time <- difftime(fus$On.Scene.DtTm, fus$Received.DtTm, units = "mins")
+
+
+fus <- fus[order(fus$Wait.Time), ]
+row.names(fus) <- 1:nrow(fus)
+
+fus <- fus[149:9435,]
+
+fus <- fus[order(fus$Call.Number), ]
+row.names(fus) <- 1:nrow(fus)
+
+fus_2012 <- fus[1:1104,]
+fus_2013 <- fus[1105:2240,]
+fus_2014 <- fus[2241:3419,]
+fus_2015 <- fus[3420:4798,]
+fus_2016 <- fus[4799:6182,]
+fus_2017 <- fus[6183:7753,]
+fus_2018 <- fus[7754:9287,]
+
+mean_fus_2012 <- mean(as.integer(fus_2012$Wait.Time))
+mean_fus_2013 <- mean(as.integer(fus_2013$Wait.Time))
+mean_fus_2014 <- mean(as.integer(fus_2014$Wait.Time))
+mean_fus_2015 <- mean(as.integer(fus_2015$Wait.Time))
+mean_fus_2016 <- mean(as.integer(fus_2016$Wait.Time))
+mean_fus_2017 <- mean(as.integer(fus_2017$Wait.Time))
+mean_fus_2018 <- mean(as.integer(fus_2018$Wait.Time))
+
+median_fus_2012 <- median(as.integer(fus_2012$Wait.Time))
+median_fus_2013 <- median(as.integer(fus_2013$Wait.Time))
+median_fus_2014 <- median(as.integer(fus_2014$Wait.Time))
+median_fus_2015 <- median(as.integer(fus_2015$Wait.Time))
+median_fus_2016 <- median(as.integer(fus_2016$Wait.Time))
+median_fus_2017 <- median(as.integer(fus_2017$Wait.Time))
+median_fus_2018 <- median(as.integer(fus_2018$Wait.Time))
+
+year <- c("2012", "2013", "2014", "2015", "2016", "2017", "2018")
+means <- c(mean_fus_2012, mean_fus_2013, mean_fus_2014, mean_fus_2015, mean_fus_2016, mean_fus_2017, mean_fus_2018)
+medians <- c(median_fus_2012, median_fus_2013, median_fus_2014, median_fus_2015, median_fus_2016, median_fus_2017, median_fus_2018)
+
+finalMatrix <- cbind(year, means, medians)
+
+write.csv(finalMatrix, "midterm_fire_data.csv", row.names = FALSE)
+
+}</code></pre>
+
+
+
 
 
     </div>
   </section>
 
-  
+
   <hr class="container">
 
- 
- 
+
+
   <section class="section">
     <div class="container content">
       <h2 id="David's Vis">
-       
+
 
       </h2>
-  
 
- 
+
+
   <footer class="footer">
     <div class="content has-text-centered">
       <small>
