@@ -113,6 +113,11 @@
             width = 960 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
+        var lineOpacityHover = "0.85";
+        var otherLinesOpacityHover = "0.1";
+        var lineStroke = "1.5px";
+        var lineStrokeHover = "2.5px";
+
         // parse the date / time
         var formatTime = d3.timeParse("%B");
 
@@ -126,25 +131,29 @@
             .x(function(d) { return x(d.months); })
             .y(function(d) { return y(d.means_Chinatown); });
 
+
+
         // define the 2nd line
         var valueline2 = d3.line()
             .x(function(d) { return x(d.months); })
             .y(function(d) { return y(d.means_Nob_Hill); });
 
+        // define the 3rd line
         var valueline3 = d3.line()
             .x(function(d) { return x(d.months); })
             .y(function(d) { return y(d.means_North_Beach); });
 
-        // define the 2nd line
+        // define the 4th line
         var valueline4 = d3.line()
             .x(function(d) { return x(d.months); })
             .y(function(d) { return y(d.means_Russian_Hill); });
 
+        // define the 5th line
         var valueline5 = d3.line()
             .x(function(d) { return x(d.months); })
             .y(function(d) { return y(d.means_Tenderloin); });
 
-        // define the 2nd line
+        // define the 6th line
         var valueline6 = d3.line()
             .x(function(d) { return x(d.months); })
             .y(function(d) { return y(d.means_USF); });
@@ -183,42 +192,96 @@
           svg.append("path")
               .data([data])
               .attr("class", "line")
-              .attr("d", valueline);
+              .attr("d", valueline)
+              .style("opacity", "0.5")
+              .on("mouseover", function(d){
+              	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
+              })
+              .on("mouseout", function(d) {
+                d3.select(this).transition().duration(500).style("opacity", "0.5").style("stroke-width", 3);
+                g.selectAll("#tooltip").remove();
+                g.selectAll("#tooltip_path").remove();
+              });
 
           // Add the valueline2 path.
           svg.append("path")
               .data([data])
               .attr("class", "line")
               .style("stroke", "red")
-              .attr("d", valueline2);
+              .attr("d", valueline2)
+              .style("opacity", "0.5")
+              .on("mouseover", function(d){
+              	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
+              })
+              .on("mouseout", function(d) {
+                d3.select(this).transition().duration(500).style("opacity", "0.5").style("stroke-width", 3);
+                g.selectAll("#tooltip").remove();
+                g.selectAll("#tooltip_path").remove();
+              });
 
           // Add the valueline3 path.
           svg.append("path")
               .data([data])
               .attr("class", "line")
               .style("stroke", "orange")
-              .attr("d", valueline3);
+              .attr("d", valueline3)
+              .style("opacity", "0.5")
+              .on("mouseover", function(d){
+              	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
+              })
+              .on("mouseout", function(d) {
+                d3.select(this).transition().duration(500).style("opacity", "0.5").style("stroke-width", 3);
+                g.selectAll("#tooltip").remove();
+                g.selectAll("#tooltip_path").remove();
+              });
 
           // Add the valueline4 path.
           svg.append("path")
               .data([data])
               .attr("class", "line")
               .style("stroke", "pink")
-              .attr("d", valueline4);
+              .attr("d", valueline4)
+              .style("opacity", "0.5")
+              .on("mouseover", function(d){
+              	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
+              })
+              .on("mouseout", function(d) {
+                d3.select(this).transition().duration(500).style("opacity", "0.5").style("stroke-width", 3);
+                g.selectAll("#tooltip").remove();
+                g.selectAll("#tooltip_path").remove();
+              });
 
           // Add the valueline5 path.
           svg.append("path")
               .data([data])
               .attr("class", "line")
               .style("stroke", "purple")
-              .attr("d", valueline5);
+              .attr("d", valueline5)
+              .style("opacity", "0.5")
+              .on("mouseover", function(d){
+              	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
+              })
+              .on("mouseout", function(d) {
+                d3.select(this).transition().duration(500).style("opacity", "0.5").style("stroke-width", 3);
+                g.selectAll("#tooltip").remove();
+                g.selectAll("#tooltip_path").remove();
+              });
 
           // Add the valueline6 path.
           svg.append("path")
               .data([data])
               .attr("class", "line")
-              .style("stroke", "yellow")
-              .attr("d", valueline6);
+              .style("stroke", "green")
+              .attr("d", valueline6)
+              .style("opacity", "0.5")
+              .on("mouseover", function(d){
+              	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
+              })
+              .on("mouseout", function(d) {
+                d3.select(this).transition().duration(500).style("opacity", "0.5").style("stroke-width", 3);
+                g.selectAll("#tooltip").remove();
+                g.selectAll("#tooltip_path").remove();
+              });
 
 
           // Add the X Axis
@@ -230,12 +293,11 @@
           svg.append("g")
               .call(d3.axisLeft(y));
 
-        });
+
+
+          });
 
       </script>
-
-
-
 
     </div>
   </section>
