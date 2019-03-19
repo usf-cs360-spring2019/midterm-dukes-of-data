@@ -191,26 +191,14 @@
              .style("text-anchor", "middle")
              .text(function(d) {
                if (d.data.neighborhood != "Chinatown" && d.data.neighborhood != "Russian Hill") {
-                 return d.data.neighborhood;
+                 return d.data.neighborhood.attr("fill", "black");
+               } else {
+                 return d.data.neighborhood.attr("fill", "white");
                }
              })
              .attr("font-size", function(d){
                  return d.r/5;
              })
-             .attr("fill", "black");
-
-        node.append("text")
-             .attr("dy", ".2em")
-             .style("text-anchor", "middle")
-             .text(function(d) {
-               if (d.data.whitenb == "Chinatown" || d.data.white.nb != "Russian Hill") {
-                 return d.data.whitenb;
-               }
-             })
-             .attr("font-size", function(d){
-                 return d.r/5;
-             })
-             .attr("fill", "white");
 
          node.append("text")
              .attr("dy", "1.3em")
