@@ -159,31 +159,46 @@
          .attr("class", "node")
          .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
 
+         // -1- Create a tooltip div that is hidden by default:
+         var tooltip = d3.select("#my_dataviz")
+         .append("div")
+         .style("opacity", 0)
+         .attr("class", "tooltip")
+         .style("background-color", "black")
+         .style("border-radius", "5px")
+         .style("padding", "10px")
+         .style("color", "white")
+
+         // -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
+         var showTooltip = function(d) {
+           tooltip
+           .transition()
+           .duration(200)
+           tooltip
+           .style("opacity", 1)
+           .html("Number of Records: " + d.records)
+           .style("left", (d3.mouse(this)[0]+30) + "px")
+           .style("top", (d3.mouse(this)[1]+30) + "px")
+         }
+         var moveTooltip = function(d) {
+           tooltip
+           .style("left", (d3.mouse(this)[0]+30) + "px")
+           .style("top", (d3.mouse(this)[1]+30) + "px")
+         }
+         var hideTooltip = function(d) {
+           tooltip
+           .transition()
+           .duration(200)
+           .style("opacity", 0)
+         }
+
          node.append("circle")
          .attr("id", function(d) { return d.id; })
          .attr("r", function(d) { return d.r; })
          .style("fill", function(d) { return color(d.data.value); })
-         .on("mouseover", function(d) {
-           div.transition()
-           .duration(200)
-           .style("opacity", .9);
-
-           var duration = 300;
-           data.forEach(function(d, i) {
-             console.log(d.value);
-             node.transition().duration(duration).delay(i * duration)
-             .attr("r", d.value);
-           });
-
-           div.html("Number of Records: <br>"+d.data.records  )
-           .style("left", (d3.event.pageX) + "px")
-           .style("top", (d3.event.pageY) + "px");
-         })
-         .on("mouseout", function(d) {
-           div.transition()
-           .duration(500)
-           .style("opacity", 0);
-         });
+         .on("mouseover", showTooltip)
+         .on("mousemove", moveTooltip)
+         .on("mouseleave", hideTooltip);
 
          node.append("text")
              .attr("dy", ".2em")
