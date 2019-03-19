@@ -1,67 +1,42 @@
-body, textarea {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 300;
-  font-size: 11pt;
-}
+
 
 body {
-  margin: 5px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 
-  /* see https://developer.mozilla.org/en-US/docs/Web/CSS/color_value */
-  background-color: whitesmoke;
-}
-
-textarea {
-  /* position the textarea on top of the svg */
-  position: fixed;
-  top: 5px;
-  left: 5px;
-
-  margin: 0px;
-  padding: 5px;
-
-  width: 400px;
-  height: 75px;
-
-  /* try changing this color in blockbuilder! */
-  background-color: rgba(255, 255, 255, 0.8);
-}
-
-textarea, svg {
-  border: 1px solid gainsboro;
-  border-radius: 10px;
+  font-family: sans-serif;
 }
 
 svg {
-  /* bl.ocks.org defaults to 960px by 500px */
-  width: 960px;
-  height: 500px;
-
-  background-color: white;
+  background-color: whitesmoke;
 }
 
-/* svg elements are styled differently from html elements */
+.cell {
+  stroke: white;
+  stroke-width: 1px;
+}
 
-/*(rect.bar {
+
+
+.axis path,
+.axis line {
   stroke: none;
-  fill: #00543c;
-}*/
-
-#x-axis text,
-#y-axis text {
-  font-size: 10pt;
-  fill: #888888;
+  fill: none;
 }
 
-#x-axis line {
-  /* tick marks */
-  fill: none;
-  stroke: none;
+.axis text {
+  fill: dimgrey;
+  font-size: 8px;
 }
 
-#x-axis path,
-#y-axis path,
-#y-axis line {
+.legend line,
+.legend path {
+  stroke: dimgrey;
   fill: none;
+}
 
+.legend text {
+  font-size: 10px;
+  fill: dimgrey;
+}
