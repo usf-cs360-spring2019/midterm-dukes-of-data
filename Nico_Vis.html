@@ -203,12 +203,13 @@
               .attr("class", "line")
               .attr("d", valueline)
               .style("opacity", "0.25")
+              .style("stroke", "red")
               .on("mouseover", function(d){
               	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
 
                 svg.append("text")
                     .attr("class", "title-text")
-                    .style("fill", "steelblue")
+                    .style("fill", "red")
                     .style("font-size", 50)
                     .style("font-family", "monospace")
                     .text("Chinatown")
@@ -226,7 +227,7 @@
           svg.append("path")
               .data([data])
               .attr("class", "line")
-              .style("stroke", "red")
+              .style("stroke", "#FFD700")
               .attr("d", valueline2)
               .style("opacity", "0.25")
               .on("mouseover", function(d){
@@ -234,7 +235,7 @@
 
                 svg.append("text")
                     .attr("class", "title-text")
-                    .style("fill", "red")
+                    .style("fill", "#FFD700")
                     .style("font-size", 50)
                     .style("font-family", "monospace")
                     .text("Nob Hill")
@@ -252,7 +253,7 @@
           svg.append("path")
               .data([data])
               .attr("class", "line")
-              .style("stroke", "orange")
+              .style("stroke", "#B22222")
               .attr("d", valueline3)
               .style("opacity", "0.25")
               .on("mouseover", function(d){
@@ -260,7 +261,7 @@
 
                 svg.append("text")
                     .attr("class", "title-text")
-                    .style("fill", "orange")
+                    .style("fill", "#B22222")
                     .style("font-size", 50)
                     .style("font-family", "monospace")
                     .text("North Beach")
@@ -278,7 +279,7 @@
           svg.append("path")
               .data([data])
               .attr("class", "line")
-              .style("stroke", "pink")
+              .style("stroke", "#F08080")
               .attr("d", valueline4)
               .style("opacity", "0.25")
               .on("mouseover", function(d){
@@ -286,7 +287,7 @@
 
                 svg.append("text")
                     .attr("class", "title-text")
-                    .style("fill", "pink")
+                    .style("fill", "#F08080")
                     .style("font-size", 50)
                     .style("font-family", "monospace")
                     .text("Russian Hill")
@@ -304,7 +305,7 @@
           svg.append("path")
               .data([data])
               .attr("class", "line")
-              .style("stroke", "purple")
+              .style("stroke", "#FF6347")
               .attr("d", valueline5)
               .style("opacity", "0.25")
               .on("mouseover", function(d){
@@ -312,7 +313,7 @@
 
                 svg.append("text")
                     .attr("class", "title-text")
-                    .style("fill", "purple")
+                    .style("fill", "#FF6347")
                     .style("font-size", 50)
                     .style("font-family", "monospace")
                     .text("Tenderloin")
@@ -330,7 +331,7 @@
           svg.append("path")
               .data([data])
               .attr("class", "line")
-              .style("stroke", "green")
+              .style("stroke", "#FF7F50")
               .attr("d", valueline6)
               .style("opacity", "0.25")
               .on("mouseover", function(d){
@@ -338,7 +339,7 @@
 
                 svg.append("text")
                     .attr("class", "title-text")
-                    .style("fill", "green")
+                    .style("fill", "#FF7F50")
                     .style("font-size", 50)
                     .style("font-family", "monospace")
                     .text("USF")
@@ -380,7 +381,7 @@
                     .attr("class", "text")
                     .text(function(d, i) { return d.means_Chinatown; })
                     .style("opacity", "1.0")
-                    .style("fill", "steelblue")
+                    .style("fill", "red")
                     .style("font-size", 10)
                     .style("font-family", "monospace")
                     .attr("x", function(d) { return x(d.months) + 10; })
@@ -396,7 +397,7 @@
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
               .style("opacity", "0.7")
-              .style("fill", "steelblue")
+              .style("fill", "red")
               .on("mouseover", function(d){
                 	d3.select(this)
                     .transition()
@@ -425,7 +426,7 @@
                     .attr("class", "text")
                     .text(function(d, i) { return d.means_Nob_Hill; })
                     .style("opacity", "1.0")
-                    .style("fill", "red")
+                    .style("fill", "#FFD700")
                     .style("font-size", 10)
                     .style("font-family", "monospace")
                     .attr("x", function(d) { return x(d.months) + 10; })
@@ -440,7 +441,7 @@
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
               .style("opacity", "0.7")
-              .style("fill", "red")
+              .style("fill", "#FFD700")
               .on("mouseover", function(d){
                 	d3.select(this).transition().duration(200).style("opacity", "1.0").attr("r", function(d, i) { return 7; });
 
@@ -449,6 +450,8 @@
                   d3.select(this).transition().duration(350).style("opacity", "0.7").attr("r", function(d, i) { return 5; });
 
                 });
+
+
 
           svg.selectAll("circle3").data(data).enter()
               .append("g")
@@ -460,7 +463,7 @@
                     .attr("class", "text")
                     .text(function(d, i) { return d.means_North_Beach; })
                     .style("opacity", "1.0")
-                    .style("fill", "orange")
+                    .style("fill", "#B22222")
                     .style("font-size", 10)
                     .style("font-family", "monospace")
                     .attr("x", function(d) { return x(d.months) + 10; })
@@ -475,7 +478,7 @@
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
               .style("opacity", "0.7")
-              .style("fill", "orange")
+              .style("fill", "#B22222")
               .on("mouseover", function(d){
                 	d3.select(this).transition().duration(200).style("opacity", "1.0").attr("r", function(d, i) { return 7; });
 
@@ -495,7 +498,7 @@
                     .attr("class", "text")
                     .text(function(d, i) { return d.means_Russian_Hill; })
                     .style("opacity", "1.0")
-                    .style("fill", "pink")
+                    .style("fill", "#F08080")
                     .style("font-size", 10)
                     .style("font-family", "monospace")
                     .attr("x", function(d) { return x(d.months) + 10; })
@@ -510,7 +513,7 @@
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
               .style("opacity", "0.7")
-              .style("fill", "pink")
+              .style("fill", "#F08080")
               .on("mouseover", function(d){
                 	d3.select(this).transition().duration(200).style("opacity", "1.0").attr("r", function(d, i) { return 7; });
 
@@ -530,7 +533,7 @@
                     .attr("class", "text")
                     .text(function(d, i) { return d.means_Tenderloin; })
                     .style("opacity", "1.0")
-                    .style("fill", "purple")
+                    .style("fill", "#FF6347")
                     .style("font-size", 10)
                     .style("font-family", "monospace")
                     .attr("x", function(d) { return x(d.months) + 10; })
@@ -545,7 +548,7 @@
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
               .style("opacity", "0.7")
-              .style("fill", "purple")
+              .style("fill", "#FF6347")
               .on("mouseover", function(d){
                 	d3.select(this).transition().duration(200).style("opacity", "1.0").attr("r", function(d, i) { return 7; });
 
@@ -565,7 +568,7 @@
                     .attr("class", "text")
                     .text(function(d, i) { return d.means_USF; })
                     .style("opacity", "1.0")
-                    .style("fill", "green")
+                    .style("fill", "#FF7F50")
                     .style("font-size", 10)
                     .style("font-family", "monospace")
                     .attr("x", function(d) { return x(d.months) + 10; })
@@ -580,7 +583,7 @@
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
               .style("opacity", "0.7")
-              .style("fill", "green")
+              .style("fill", "#FF7F50")
               .on("mouseover", function(d){
                 	d3.select(this).transition().duration(200).style("opacity", "1.0").attr("r", function(d, i) { return 7; });
 
