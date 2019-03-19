@@ -124,6 +124,7 @@
         .append("g")
           .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
+
       // Define the div for the tooltip
       var div = d3.select("body").append("div")
       .attr("class", "tooltip")
@@ -146,6 +147,13 @@
  	       return d;
        }, function(error, data) {
          if (error) throw error;
+
+         var tip = d3.tip()
+           .attr('class', 'd3-tip')
+           .offset([10, 0])
+           .html(function(d) {
+             return "<strong>Number of Records:</strong> <span style='color:red'>" + d.records; +"</span>";
+           })
 
          var color = d3.scaleOrdinal()
          .domain(data.map(function(d){ return d.value;}))
@@ -179,7 +187,7 @@
        div.html("Number of Records: <br>"+d.data.records  )
          .style("left", (d3.event.pageX) + "px")
          .style("top", (d3.event.pageY - 28) + "px");
-     })					
+     })
        .on("mouseout", function(d) {
        div.transition()
          .duration(500)
