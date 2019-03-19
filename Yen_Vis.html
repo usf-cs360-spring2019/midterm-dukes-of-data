@@ -103,16 +103,15 @@
       <!-- todo: modify as necessary (or move visualizations to separate pages) -->
       <script src="https://d3js.org/d3.v4.min.js"></script>
       <script>
-      var svg = d3.select("body").append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform",
-                "translate(" + margin.left + "," + margin.top + ")");
-      // Define the div for the tooltip
+      var svg = d3.select("svg"),
+      width = +svg.attr("width"),
+      height = +svg.attr("height");
+
+        // Define the div for the tooltip
       var div = d3.select("body").append("div")
       .attr("class", "tooltip")
       .style("opacity", 0);
+
       svg.append("text")
       .attr("x", 100)
       .attr("y", 20 )
