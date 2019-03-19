@@ -100,8 +100,21 @@
       <h2>Data and Processing</h2>
 
       <p>
-        For this project we will use data from the data.sfgov.org website and we will filter it down <br>
-        to the USF/Lone Mountain area 2012-2018 the link to the data can be found at <a href="https://data.sfgov.org/Public-Safety/Fire-Department-Calls-for-Service/nuek-vuh3/data">Here</a>
+        We are looking at data provided by DataSF regarding the San Francisco Fire Department.
+        The Fire Calls-For-Service dataset includes all fire units responses to calls. Each record includes the call number,
+        incident number, address, unit identifier, call type, and disposition. All relevant time intervals are also
+        included. We have filtered the data to only include the 2018 data for the Chinatown, Nob Hill,
+        North Beach, Russian Hill, Tenderloin, and USF neighborhoods. After filtering, we were left with a dataset that contains
+        74,490 rows and 34 columns.
+        The link to the data can be found <a href="https://data.sfgov.org/Public-Safety/Fire-Department-Calls-for-Service/nuek-vuh3/data">here</a>.
+      </p>
+
+      <p>
+        There was quite a bit or preprocessing that took place before we were able to prototype the data
+        and code it in d3. For the Average Wait Time per Month for Each Neighborhood chart, Nico created an
+        R script that takes in the raw dataset and outputs a dataset that contains the mean wait time, median wait time,
+        minimum wait time, maximum wait time, and count of calls per month for each neighborhood. The link to this
+        R script can be found <a href="https://github.com/usf-cs360-spring2019/midterm-dukes-of-data/blob/gh-pages/clean_fire.R">here</a>.
       </p>
 
 

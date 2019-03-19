@@ -22,7 +22,7 @@
     <div class="hero-body">
       <div class="container">
         <h1 class="title">
-          Nico's Visualization
+          Average Wait Time
         </h1>
       </div>
     </div>
@@ -52,29 +52,24 @@
             <span class="icon">
               <i class="fas fa-chart-area"></i>
             </span>
-            <span>Highest Number of Alarm</span>
+            <span>Highest Num. of Alarms</span>
           </a>
 
           <a class="navbar-item" href="Nico_Vis.html">
             <span class="icon">
               <i class="fas fa-chart-area"></i>
             </span>
-            <span>Nico's Vis</span>
+            <span>Average Response Time</span>
           </a>
 
-          <a class="navbar-item" href="Kim_Vis.html">
+          <div id="main-navbar" class="navbar-menu">
+            <a class="navbar-item" href="Kim_Vis.html">
               <span class="icon">
                 <i class="fas fa-chart-area"></i>
               </span>
               <span>Kim's Vis</span>
-          </a>
-
-          <a class="navbar-item" href="prototypes.html">
-              <span class="icon">
-                <i class="fas fa-chart-area"></i>
-              </span>
-              <span>Prototypes</span>
-          </a>
+            </a>
+          </div>
 
           <div class="navbar-end">
             <a class="navbar-item" href="dataAndProcessing.html">
@@ -108,13 +103,13 @@
         }
       </style>
       <!-- todo: modify as necessary (or move visualizations to separate pages) -->
-      <h2>Visualization</h2>
+      <h2>Average Response Time per Month for Each Neighborhood in 2018</h2>
 
       <script src="https://d3js.org/d3.v4.min.js"></script>
       <script>
 
         // set the dimensions and margins of the graph
-        var margin = {top: 10, right: 40, bottom: 30, left: 70},
+        var margin = {top: 5, right: 40, bottom: 30, left: 70},
             width = 960 - margin.left - margin.right,
             height = 500 - margin.top - margin.bottom;
 
@@ -195,7 +190,7 @@
               .data([data])
               .attr("class", "line")
               .attr("d", valueline)
-              .style("opacity", "0.5")
+              .style("opacity", "0.25")
               .on("mouseover", function(d){
               	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
 
@@ -211,7 +206,7 @@
 
               })
               .on("mouseout", function(d) {
-                d3.select(this).transition().duration(350).style("opacity", "0.5").style("stroke-width", 3);
+                d3.select(this).transition().duration(350).style("opacity", "0.25").style("stroke-width", 3);
                 svg.select(".title-text").remove();
               });
 
@@ -221,7 +216,7 @@
               .attr("class", "line")
               .style("stroke", "red")
               .attr("d", valueline2)
-              .style("opacity", "0.5")
+              .style("opacity", "0.25")
               .on("mouseover", function(d){
               	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
 
@@ -237,7 +232,7 @@
 
               })
               .on("mouseout", function(d) {
-                d3.select(this).transition().duration(350).style("opacity", "0.5").style("stroke-width", 3);
+                d3.select(this).transition().duration(350).style("opacity", "0.25").style("stroke-width", 3);
                 svg.select(".title-text").remove();
               });
 
@@ -247,7 +242,7 @@
               .attr("class", "line")
               .style("stroke", "orange")
               .attr("d", valueline3)
-              .style("opacity", "0.5")
+              .style("opacity", "0.25")
               .on("mouseover", function(d){
               	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
 
@@ -263,7 +258,7 @@
 
               })
               .on("mouseout", function(d) {
-                d3.select(this).transition().duration(350).style("opacity", "0.5").style("stroke-width", 3);
+                d3.select(this).transition().duration(350).style("opacity", "0.25").style("stroke-width", 3);
                 svg.select(".title-text").remove();
               });
 
@@ -273,7 +268,7 @@
               .attr("class", "line")
               .style("stroke", "pink")
               .attr("d", valueline4)
-              .style("opacity", "0.5")
+              .style("opacity", "0.25")
               .on("mouseover", function(d){
               	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
 
@@ -289,7 +284,7 @@
 
               })
               .on("mouseout", function(d) {
-                d3.select(this).transition().duration(350).style("opacity", "0.5").style("stroke-width", 3);
+                d3.select(this).transition().duration(350).style("opacity", "0.25").style("stroke-width", 3);
                 svg.select(".title-text").remove();
               });
 
@@ -299,7 +294,7 @@
               .attr("class", "line")
               .style("stroke", "purple")
               .attr("d", valueline5)
-              .style("opacity", "0.5")
+              .style("opacity", "0.25")
               .on("mouseover", function(d){
               	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
 
@@ -315,7 +310,7 @@
 
               })
               .on("mouseout", function(d) {
-                d3.select(this).transition().duration(350).style("opacity", "0.5").style("stroke-width", 3);
+                d3.select(this).transition().duration(350).style("opacity", "0.25").style("stroke-width", 3);
                 svg.select(".title-text").remove();
               });
 
@@ -325,7 +320,7 @@
               .attr("class", "line")
               .style("stroke", "green")
               .attr("d", valueline6)
-              .style("opacity", "0.5")
+              .style("opacity", "0.25")
               .on("mouseover", function(d){
               	d3.select(this).transition().duration(200).style("opacity", "1.0").style("stroke-width", 5);
 
@@ -341,7 +336,7 @@
 
               })
               .on("mouseout", function(d) {
-                d3.select(this).transition().duration(350).style("opacity", "0.5").style("stroke-width", 3);
+                d3.select(this).transition().duration(350).style("opacity", "0.25").style("stroke-width", 3);
                 svg.select(".title-text").remove();
               });
 
@@ -351,9 +346,17 @@
               .attr("transform", "translate(0," + height + ")")
               .call(d3.axisBottom(x).ticks(width / 80).tickSizeOuter(0));
 
+
           // Add the Y Axis
           svg.append("g")
-              .call(d3.axisLeft(y));
+              .call(d3.axisLeft(y))
+              .append('text')
+              .attr("y", -40)
+              .attr("x", -150)
+              .attr("transform", "rotate(-90)")
+              .attr("fill", "#000")
+              .text("Average Wait Time (Minutes)")
+              .style("font-size", 15);
 
           svg.selectAll("circle").data(data).enter()
               .append("g")
@@ -370,6 +373,7 @@
                     .style("font-family", "monospace")
                     .attr("x", function(d) { return x(d.months) + 10; })
                     .attr("y", function(d) { return y(d.means_Chinatown); });
+
                 })
               .on("mouseout", function(d) {
                   d3.select(".text").remove();
@@ -379,7 +383,7 @@
               .attr("cy", function(d) { return y(d.means_Chinatown); })
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
-              .style("opacity", "0.8")
+              .style("opacity", "0.7")
               .style("fill", "steelblue")
               .on("mouseover", function(d){
                 	d3.select(this)
@@ -391,7 +395,7 @@
 
                 })
                 .on("mouseout", function(d) {
-                  d3.select(this).transition().duration(350).style("opacity", "0.8").attr("r", function(d, i) { return 5; });
+                  d3.select(this).transition().duration(350).style("opacity", "0.7").attr("r", function(d, i) { return 5; });
 
               });
 
@@ -423,14 +427,14 @@
               .attr("cy", function(d) { return y(d.means_Nob_Hill); })
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
-              .style("opacity", "0.8")
+              .style("opacity", "0.7")
               .style("fill", "red")
               .on("mouseover", function(d){
                 	d3.select(this).transition().duration(200).style("opacity", "1.0").attr("r", function(d, i) { return 7; });
 
                 })
                 .on("mouseout", function(d) {
-                  d3.select(this).transition().duration(350).style("opacity", "0.8").attr("r", function(d, i) { return 5; });
+                  d3.select(this).transition().duration(350).style("opacity", "0.7").attr("r", function(d, i) { return 5; });
 
                 });
 
@@ -458,14 +462,14 @@
               .attr("cy", function(d) { return y(d.means_North_Beach); })
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
-              .style("opacity", "0.8")
+              .style("opacity", "0.7")
               .style("fill", "orange")
               .on("mouseover", function(d){
                 	d3.select(this).transition().duration(200).style("opacity", "1.0").attr("r", function(d, i) { return 7; });
 
                 })
                 .on("mouseout", function(d) {
-                  d3.select(this).transition().duration(350).style("opacity", "0.8").attr("r", function(d, i) { return 5; });
+                  d3.select(this).transition().duration(350).style("opacity", "0.7").attr("r", function(d, i) { return 5; });
 
                 });
 
@@ -493,14 +497,14 @@
               .attr("cy", function(d) { return y(d.means_Russian_Hill); })
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
-              .style("opacity", "0.8")
+              .style("opacity", "0.7")
               .style("fill", "pink")
               .on("mouseover", function(d){
                 	d3.select(this).transition().duration(200).style("opacity", "1.0").attr("r", function(d, i) { return 7; });
 
                 })
                 .on("mouseout", function(d) {
-                  d3.select(this).transition().duration(350).style("opacity", "0.8").attr("r", function(d, i) { return 5; });
+                  d3.select(this).transition().duration(350).style("opacity", "0.7").attr("r", function(d, i) { return 5; });
 
                 });
 
@@ -528,14 +532,14 @@
               .attr("cy", function(d) { return y(d.means_Tenderloin); })
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
-              .style("opacity", "0.8")
+              .style("opacity", "0.7")
               .style("fill", "purple")
               .on("mouseover", function(d){
                 	d3.select(this).transition().duration(200).style("opacity", "1.0").attr("r", function(d, i) { return 7; });
 
                 })
                 .on("mouseout", function(d) {
-                  d3.select(this).transition().duration(350).style("opacity", "0.8").attr("r", function(d, i) { return 5; });
+                  d3.select(this).transition().duration(350).style("opacity", "0.7").attr("r", function(d, i) { return 5; });
 
                 });
 
@@ -563,25 +567,47 @@
               .attr("cy", function(d) { return y(d.means_USF); })
               .attr("r", function(d, i) { return 5; })
               .attr("id", function(d) { return d.id; })
-              .style("opacity", "0.8")
+              .style("opacity", "0.7")
               .style("fill", "green")
               .on("mouseover", function(d){
                 	d3.select(this).transition().duration(200).style("opacity", "1.0").attr("r", function(d, i) { return 7; });
 
                 })
                 .on("mouseout", function(d) {
-                  d3.select(this).transition().duration(350).style("opacity", "0.8").attr("r", function(d, i) { return 5; });
+                  d3.select(this).transition().duration(350).style("opacity", "0.7").attr("r", function(d, i) { return 5; });
 
                 });
-
-
-
-
           });
 
       </script>
 
+
     </div>
+  </section>
+
+  <section class="section">
+    <div class="content">
+    <h3>Interpretation</h3>
+    <p>
+      This is a multiple line graph that is depicting the Average Wait Time per Month for Each Neighborhood in 2018. Each line in the chart represents the average
+      wait times for the fire department (in minutes) for that given neighborhood. When you hover over a line the neighborhood that it represents shows up on the chart
+      and when you hover over a dot on the line the actual wait time is displayed.
+    </p>
+
+    <h3>Conclusions</h3>
+    <p>
+      This chart is interesting because you are able to see the
+    </p>
+
+    <h3>Credit</h3>
+    <p>
+      I gained inspiration from looking at the examples of Prof. Sophie Engle, Jason Davies, Mike Bostock, and Yuanyuan Zhang.
+    </p>
+
+    <h3>Prototype</h3>
+    <img src="hw2_prototype.png" alt="" width="100%" height="300">
+
+  </div>
   </section>
 
   <!-- separator between sections -->
