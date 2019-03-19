@@ -163,7 +163,7 @@
 
          var color = d3.scaleOrdinal()
          .domain(data.map(function(d){ return d.value;}))
-         .range(['#FFD700','#EE7600','#FFA500','#DC143C']);
+         .range(['#F4D166','#DF5848','#FB904E','#B71D3E']);
 
          var root = d3.hierarchy({children: data})
          .sum(function(d) { return d.value; })
