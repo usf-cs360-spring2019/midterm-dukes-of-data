@@ -21,6 +21,16 @@ svg {
   fill: dimgrey;
   font-size: 8px;
 }
+.axis path,
+.axis line {
+  stroke: none;
+  fill: none;
+}
+
+.axis text {
+  fill: dimgrey;
+  font-size: 8px;
+}
 
 .legend line,
 .legend path {
