@@ -182,22 +182,6 @@
          .text(function(d) {
              return d.data.neighborhood + "\n" + d.data.value;
            return "";});
-
-         var linear = d3.scaleLinear()
-         .domain([0,10])
-         .range(["#FFD700", "#FF0000"]);
-
-         node.append("g")
-         .attr("class", "legendLinear")
-         .attr("transform", "translate(20,20)");
-
-         var legendLinear = d3.legendColor()
-         .shapeWidth(30)
-         .orient('horizontal')
-         .scale(linear);
-
-         node.select(".legendLinear")
-         .call(legendLinear);
        });
       </script>
 
