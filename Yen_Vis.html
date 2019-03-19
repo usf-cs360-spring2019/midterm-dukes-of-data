@@ -177,7 +177,7 @@
            });
 
            div.html("Number of Records: <br>"+d.data.records  )
-           .style("left", (d3.event.pageX) + "px")
+           .style("left", (d3.event.pageX - 28) + "px")
            .style("top", (d3.event.pageY) + "px");
          })
          .on("mouseout", function(d) {
@@ -190,10 +190,7 @@
              .attr("dy", ".2em")
              .style("text-anchor", "middle")
              .text(function(d) {
-               if (d.data.neighborhood != "Chinatown" && d.data.neighborhood != "Russian Hill") {
                  return d.data.neighborhood.attr("fill", "black");
-               } else {
-                 return d.data.neighborhood.attr("fill", "white");
                }
              })
              .attr("font-size", function(d){
