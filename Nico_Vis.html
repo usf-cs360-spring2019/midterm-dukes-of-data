@@ -355,7 +355,7 @@
               .attr("x", -150)
               .attr("transform", "rotate(-90)")
               .attr("fill", "#000")
-              .text("Average Wait Time (Minutes)")
+              .text("Average Response Time (Minutes)")
               .style("font-size", 15);
 
           svg.selectAll("circle").data(data).enter()
@@ -589,23 +589,25 @@
     <div class="content">
     <h3>Interpretation</h3>
     <p>
-      This is a multiple line graph that is depicting the Average Wait Time per Month for Each Neighborhood in 2018. Each line in the chart represents the average
-      wait times for the fire department (in minutes) for that given neighborhood. When you hover over a line the neighborhood that it represents shows up on the chart
+      This is a multiple line graph that is depicting the Average Response Time per Month for Each Neighborhood in 2018. Each line in the chart represents the average
+      response times for the fire department (in minutes) for that given neighborhood. When you hover over a line the neighborhood that it represents shows up on the chart
       and when you hover over a dot on the line the actual wait time is displayed.
     </p>
 
     <h3>Conclusions</h3>
     <p>
-      This chart is interesting because you are able to see the
+      This chart is interesting because you are able to see the difference in response time for different neighborhoods in San Francisco throughout the year. Some
+      intriguing trends that you can see in the chart are some huge spikes in response time for multiple neighborhoods in the same month. For example, we can obviously see that
+      the response times for Russian Hill, North Beach, and Chinatown all jump in the month of October. It's also interesting to note that some of these neighborhoods have a wide range
+      of average response times. Russian Hill has the largest range of about 2 and a half minutes. In situations that could be life and death and every second counts the firefighters
+      should be getting to the scene as soon as possible.
     </p>
 
     <h3>Credit</h3>
     <p>
-      I gained inspiration from looking at the examples of Prof. Sophie Engle, Jason Davies, Mike Bostock, and Yuanyuan Zhang.
+      I gained inspiration from looking at the examples of <a href="https://bl.ocks.org/d3noob/4db972df5d7efc7d611255d1cc6f3c4f">d3noob</a>,
+      <a href="http://bl.ocks.org/romsson/f205420d21ced66810058d4cdf25c6dd">Romain Vuillemot</a>, <a href="https://codepen.io/zakariachowdhury/pen/JEmjwq">Zakaria Chowdhury</a>, and Prof. Sophie Engle.
     </p>
-
-    <h3>Prototype</h3>
-    <img src="hw2_prototype.png" alt="" width="100%" height="300">
 
   </div>
   </section>
