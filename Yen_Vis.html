@@ -190,11 +190,6 @@
              return d.data.neighborhood;
            return "";});
 
-         node.append("text")
-         .text(function(d) {
-             return d.data.value;
-           return "";});
-
 
            var legend = svg.selectAll(".legend")
            .data(data).enter()
