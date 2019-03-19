@@ -194,11 +194,7 @@
              .attr("font-size", function(d){
                  return d.r/5;
              })
-             .attr("fill", if (d.data.neighborhood != "Chinatown" && d.data.neighborhood != "Russian Hill") {
-               "black"
-             } else {
-               "white"
-             });
+             .attr("fill", "black");
 
          node.append("text")
              .attr("dy", "1.3em")
