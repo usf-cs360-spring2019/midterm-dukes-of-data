@@ -22,7 +22,7 @@
 <body>
 <!-- header -->
   <section class="hero is-primary is-bold">
-    <!-- todo: change assignment and name -->
+    
     <div class="hero-body">
       <div class="container">
         <h1 class="title">
@@ -169,11 +169,9 @@ d3.csv("Fire_Department7.csv",
           //console.log(value)
           break;
         default:
-        //var value = parseFloat(row[col]);
-        //console.log(value);
-        //console.log(row[col])
+        
         out.values.push({name: name, value:value, field:row[col]})
-        //console.log(field);
+       
           break;
       }
     }
@@ -210,9 +208,7 @@ d3.csv("Fire_Department7.csv",
     values = d3.merge(values);
     //console.log(values)
     values = values.map(function(d) { return d.value; });
-    //console.log(values)
-    //console.log("number of values:", values.length);
-
+    
 
     colorScale.domain([0, 3, 6]);
 
