@@ -178,6 +178,18 @@
            .style("opacity", 0);
          });
 
+         if (d.data.neighborhood == "Chinatown" || d.data.neighborhood == "Russian Hill") {
+           node.append("text")
+               .attr("dy", ".2em")
+               .style("text-anchor", "middle")
+               .text(function(d) {
+                   return d.data.neighborhood;
+               })
+               .attr("font-size", function(d){
+                   return d.r/5;
+               })
+               .attr("fill", "white");
+         } else {
          node.append("text")
              .attr("dy", ".2em")
              .style("text-anchor", "middle")
@@ -188,6 +200,7 @@
                  return d.r/5;
              })
              .attr("fill", "black");
+           }
 
          node.append("text")
              .attr("dy", "1.3em")
