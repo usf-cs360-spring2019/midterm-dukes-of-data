@@ -101,6 +101,23 @@
   <section class="section">
     <div class="container content">
       <!-- todo: modify as necessary (or move visualizations to separate pages) -->
+      <style>
+        svg {
+          font: 16px"Avenir";
+        }
+        div.tooltip {
+          position: absolute;
+          text-align: center;
+          width: 60px;
+          height: 45px;
+          padding: 2px;
+          font: 12px sans-serif;
+          background: lightsteelblue;
+          border: 0px;
+          border-radius: 8px;
+          pointer-events: none;
+        }
+      </style>
       <script src="https://d3js.org/d3.v4.min.js"></script>
       <script>
       var margin = {top: 10, right: 30, bottom: 30, left: 70},
