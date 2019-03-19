@@ -152,7 +152,7 @@
   	   .style("font-weight", "bold")
 
        var pack = d3.pack()
-           .size([500, 500])
+           .size([width-150, height])
            .padding(1.5);
 
        d3.csv("yen_data.csv", function(d) {
