@@ -180,14 +180,8 @@
 
          node.append("text")
          .text(function(d) {
-             return d.data.neighborhood;
-           return "\n";});
-
-         node.append("text")
-         .text(function(d) {
-             return d.data.value;
-           return "";})
-           .style("font-size: 12px");
+             return d.data.neighborhood + "\n" + d.data.value;
+           return "";});
 
            var legend = svg.selectAll(".legend")
            .data(data).enter()
