@@ -142,7 +142,6 @@
          d.value = +d["Max_Number_of_Alarms"];
          d.neighborhood = d["Neighborhoods"];
          d.records = d["Number_of_Records"];
-         d.whitenb = d["White_Neighborhoods"];
  	       return d;
        }, function(error, data) {
          if (error) throw error;
@@ -177,7 +176,7 @@
            });
 
            div.html("Number of Records: <br>"+d.data.records  )
-           .style("left", (d3.event.pageX - 28) + "px")
+           .style("left", (d3.event.pageX) + "px")
            .style("top", (d3.event.pageY) + "px");
          })
          .on("mouseout", function(d) {
@@ -190,11 +189,15 @@
              .attr("dy", ".2em")
              .style("text-anchor", "middle")
              .text(function(d) {
-                 return d.data.neighborhood.attr("fill", "black");
-               }
+                 return d.data.neighborhood;
              })
              .attr("font-size", function(d){
                  return d.r/5;
+             })
+             .attr("fill", if (d.data.neighborhood != "Chinatown" && d.data.neighborhood != "Russian Hill") {
+               "black"
+             } else {
+               "white"
              });
 
          node.append("text")
