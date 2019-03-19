@@ -166,13 +166,12 @@
        }, function(error, data) {
          if (error) throw error;
 
-         data = data.map(function(d){return d.records; });
-
          var color = d3.scaleOrdinal()
          .domain(data.map(function(d){ return d.value;}))
          .range(['#F4D166','#DF5848','#FB904E','#B71D3E']);
 
-         var root = bubble.root({children:data}).filter(function(d) { return !d.children; });
+         var root = d3.hierarchy({children: data})
+         .sum(function(d) { return d.records; })
 
          var node = svg.selectAll(".node")
          .data(pack(root).leaves())
