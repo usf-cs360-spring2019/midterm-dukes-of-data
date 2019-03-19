@@ -164,7 +164,7 @@
          if (error) throw error;
 
          var color = d3.scaleOrdinal()
-         .domain(data.map(function(d){ return d.value;}))
+         .domain(data.map(function(d){ return d.records;}))
          .range(['#F4D166','#DF5848','#FB904E','#B71D3E']);
 
          var root = d3.hierarchy({children: data})
@@ -181,7 +181,7 @@
          node.append("circle")
          .attr("id", function(d) { return d.id; })
          .attr("r", function(d) { return d.r; })
-         .style("fill", function(d) { return color(d.data.records); })
+         .style("fill", function(d) { return color(d.data.value); })
          .on("mouseover", function(d) {
            div.transition()
            .duration(200)
