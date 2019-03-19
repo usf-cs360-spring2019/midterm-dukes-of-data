@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+
+
+<head>
+
+  <meta charset="utf-8">
+  <link href="style2.css" rel="stylesheet" type="text/css">
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300,300italic" rel="stylesheet" type="text/css">
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+
+</head>
+
+<body>
+<svg></svg>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
+
+  <script>
+  var max
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([10, 0])
+    .html(function(d) {
+      return "<strong>Value:</strong> <span style='color:red'>" + d.value; +"</span>";
+    })
+
+
+  d3.csv("Fire_Department7.csv", function(row){
+
+  return row;
+  }).then(function(data2){
+    console.log(data2.length);
+    let svg = d3.select("body").select("svg");
+    let count = d3.map();
+     var category
+    for (let i = 0; i < data2.length; i++) {
+    category = data2[i]["Call Final Disposition"];
+      if (count.has(category)) {
+        count.set(category, count.get(category) + 1);
+      }
+      else {
+        count.set(category, 1);
+      }
+    }
+    let countMin = 0; // always include 0 in a bar chart!
+    let countMax = d3.max(count.values());
+  svg.call(tip);
+    let margin = {
+      top:    15,
+      right:  100,
+      bottom: 300,
+      left:   50
+    };
+    let bounds = svg.node().getBoundingClientRect();
+    let plotWidth = bounds.width - margin.right - margin.left;
+    let plotHeight = bounds.height - margin.top - margin.bottom;
+
+
+
+    let yScale = d3.scaleLinear()
+      .domain([countMin,countMax])
+      .range([plotHeight, 0])
+      .nice(); // rounds the domain a bit for nicer output
+
+
+     var cat = data2[8]["Incident Category"]
+  let xScale
+    //for(var l=2; l<data2.length;l++){
+     xScale = d3.scaleBand()
+       .domain(["Code 2 Transport","Fire","Patient Declined Transport","No Merit","Gone on Arrival","Other","Cancelled","Against Medical Advice","SFPD","Code 3 Transport","Medical Examiner","Unable to Locate","Duplicate","CHP"])
+      .rangeRound([0, plotWidth])
+      .paddingInner(0.1); // space between bars
+
+    let plot = svg.select("g#plot");
+
+    if (plot.size() < 1) {
+
+      plot = svg.append("g").attr("id", "plot");
+
+
+      plot.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    }
+
+
+    let xAxis = d3.axisBottom(xScale);
+    let yAxis = d3.axisRight(yScale);
+
+
+    if (plot.select("g#y-axis").size() < 1) {
+      let xGroup = plot.append("g").attr("id", "x-axis");
+
+
+      xGroup.call(xAxis);
+
+      xGroup.attr("transform",  "translate(0," + plotHeight + ")");
+      xGroup.selectAll("text")
+      .attr("y", 0)
+      .attr("x", 9)
+      .attr("dy", ".35em")
+      .attr("transform", "rotate(90)")
+      .style("text-anchor", "start");
+
+
+      let yGroup = plot.append("g").attr("id", "y-axis");
+      yGroup.call(yAxis);
+      yGroup.attr("transform", "translate(" + plotWidth + ",0)");
+    }
+    else {
+
+      plot.select("g#y-axis").call(yAxis);
+    }
+
+
+    let bars = plot.selectAll("rect")
+      .data(count.entries(), function(d) { return d.key; });
+
+
+     console.log(category);
+
+    bars.enter().append("rect")// we will style using css
+      .attr("class", "bar")
+
+      .attr("width", xScale.bandwidth())
+
+
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide)
+
+      .attr("fill", function(d) {
+
+      if (d.key==="Fire" ) { //Red
+        return "red";
+      } else if(d.key==="Code 2 Transport"){
+        return "orangered"
+      }else if(d.key==="Patient Declined Transport") {  //green
+        return "yellow";
+      } else if (d.key === "No Merit") { //Orange
+        return "orange";
+
+      }
+      else if(d.key==="Gone on Arrival"){
+      return "maroon";
+    }
+    else if(d.key==="Other"){
+      return "Indianred";
+    }
+    else if(d.key==="Cancelled"){
+      return "firebrick";
+    }
+    else if(d.key==="Again Medical Advice"){
+      return "crimson";
+    }
+    else if(d.key==="SFPD"){
+      return "darkred";
+    }
+    else if(d.key==="Code 3 Transport"){
+      return "crimson";
+    }
+    else if(d.key==="Medical Examiner"){
+      return "darksalmon";
+    }
+    else if(d.key==="Unable to Locate"){
+      return "darkorange";
+    }
+    else if(d.key==="Duplicate"){
+      return "brown";
+    }
+    else if(d.key==="CHP"){
+      return "purple";
+    }
+      return "pink";
+    })
+
+    //////////////////////////////////////
+      .attr("x", function(d) {
+        return xScale(d.key);
+      })
+      // and do something similar for our y pixel position
+      .attr("y", function(d) {
+        return yScale(d.value);
+      })
+      // here it gets weird again, how do we set the bar height?
+      .attr("height", function(d) {
+        return plotHeight - yScale(d.value);
+      })
+      .each(function(d, i, nodes) {
+        console.log("Added bar for:", d.key);
+      })
+
+
+
+  svg.selectAll("text")
+  .data(data2)
+  .enter()
+  .append("text")
+  .text(function(d){
+    return d;
+  })
+
+
+   //.attr("text-anchor", "middle")
+   .attr({
+     x: function(d,i){ return (plotWidth/data2.length)*i + (plotWidth/data2.length -5)/2;},
+     y: function(d,i){return plotHeight-d;},
+   })
+
+   svg.append("text")
+          .attr("x", (plotWidth/ 2))
+          .attr("y", 50 - (1 / 2))
+          .attr("text-anchor", "middle")
+          .style("font-size", "12px")
+          .text("Final Call Disposition");
+    //////////////////////////////////////
+    svg.append("text")
+           .attr("x", (1/ 10))
+           .attr("y", 30 - (1 / 5))
+           .attr("dy", ".35em")
+           .attr("transform", "rotate(-90)")
+           .attr("text-anchor", "end")
+           .style("font-size", "12px")
+           .text("Number of calls per Final Call Disposition");
+
+            svg.append("text")
+                   .attr("x", (plotWidth/ 2))
+                   .attr("y", 20 - (1 / 2))
+                   .attr("text-anchor", "middle")
+                   .style("font-size", "16px")
+                   .text("Number of Calls based on the Final Disposition");
+                   svg.append("text")
+                          .attr("x", (1/ 10))
+                          .attr("y", 600 - (1 / 2))
+                          .attr("text-anchor", "start")
+                          .style("font-size", "12px")
+                          .text("David Mendez: This shows the number of calls made per each final call disposition designation. In this case colors do not represent anything in particular");
+
+                          svg.append("text")
+                                 .attr("x", (1/ 10))
+                                 .attr("y", 619 - (1 / 2))
+                                 .attr("text-anchor", "start")
+                                 .style("font-size", "12px")
+                                 .text("we can easily see how the vast majority of calls are about Code 2 transport which refers to an important but non time critical transportation with fire taking");
+
+                                 svg.append("text")
+                                        .attr("x", (1/ 10))
+                                        .attr("y", 638 - (1 / 2))
+                                        .attr("text-anchor", "start")
+                                        .style("font-size", "12px")
+                                        .text("the second spot with half as many total calls, and all others following that, its hard to see but Duplicate amounts to 15 and CHP to 8");
+
+
+
+
+
+        //.attr("data-legend",function(d) { return d.name})
+
+
+                    legend = svg.append("g")
+                      .attr("class","legend")
+                      .attr("transform","translate(50,30)")
+                      .style("font-size","12px")
+                      //.call(d3.legend)
+
+
+
+
+    bars.transition()
+      .attr("y", function(d) { return yScale(d.value); })
+      .attr("height", function(d) { return plotHeight - yScale(d.value); });
+
+
+    bars.exit()
+      .each(function(d, i, nodes) {
+        console.log("Removing bar for:", d.key);
+      })
+
+      .attr("y", function(d) { return yScale(countMin); })
+      .attr("height", function(d) { return plotHeight - yScale(countMin); })
+      .remove();
+
+  function type(d){
+    d.value = +d.value;
+    return d;
+  }
+
+  })
+
+
+
+
+</script>
+
+  </body>
