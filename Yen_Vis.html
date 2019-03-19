@@ -151,9 +151,10 @@
       .style("font-size", "28px")
   	   .style("font-weight", "bold")
 
-       var pack = d3.pack()
-       .size([width-150, height])
-       .padding(1.5);
+       var pack = d3.layout.pack()
+           .sort(null)
+           .size([500, 500])
+           .padding(1.5);
 
        d3.csv("yen_data.csv", function(d) {
          d.value = +d["Max_Number_of_Alarms"];
