@@ -104,54 +104,107 @@
       <svg width="960" height="500" text-anchor="middle"></svg>
       <script src="https://d3js.org/d3.v4.min.js"></script>
       <script>
-        var diameter = 500, //max size of the bubbles
-        color    = d3.scale.category20b(); //color category
+      var svg = d3.select("svg"),
+      width = +svg.attr("width"),
+      height = +svg.attr("height");
 
-        var bubble = d3.layout.pack()
-        .sort(null)
-        .size([diameter, diameter])
-        .padding(1.5);
+      // Define the div for the tooltip
+      var div = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
 
-        var svg = d3.select("body")
-        .append("svg")
-        .attr("width", diameter)
-        .attr("height", diameter)
-        .attr("class", "bubble");
 
-        d3.csv("yen_data.csv", function(error, data){
+      svg.append("text")
+      .attr("x", 100)
+      .attr("y", 20 )
+      .attr("dy", "3.5em" )
+      .attr("text-anchor", "start")
+      .style("font-size", "28px")
+  	   .style("font-weight", "bold")
+       .text("Highest ")
 
-          //convert numerical values from strings to numbers
-          data = data.map(function(d){ d.value = +d["Number_of_Alarms"]; return d; });
+       var pack = d3.pack()
+       .size([width-150, height])
+       .padding(1.5);
 
-          //bubbles needs very specific format, convert data to this.
-          var nodes = bubble.nodes({children:data}).filter(function(d) { return !d.children; });
+       d3.csv("yen_data.csv", function(d) {
+         d.value = +d["Max_Number_of_Alarms"];
+         d.neighborhood = d["Neighborhoods"];
+         d.records = d["Number_of_Records"];
+ 	       return d;
+       }, function(error, data) {
+         if (error) throw error;
 
-          //setup the chart
-          var bubbles = svg.append("g")
-          .attr("transform", "translate(0,0)")
-          .selectAll(".bubble")
-          .data(nodes)
-          .enter();
 
-          //create the bubbles
-          bubbles.append("circle")
-          .attr("r", function(d){ return d.r; })
-          .attr("cx", function(d){ return d.x; })
-          .attr("cy", function(d){ return d.y; })
-          .style("fill", function(d) { return color(d.value); });
+         var color = d3.scaleOrdinal()
+         .domain(data.map(function(d){ return d.value;}))
+         .range(['#FFD700','#FF0000']);
 
-          //format the text for each bubble
-          bubbles.append("text")
-          .attr("x", function(d){ return d.x; })
-          .attr("y", function(d){ return d.y + 5; })
-          .attr("text-anchor", "middle")
-          .text(function(d){ return d["Neighborhoods"]; })
-          .style({
-              "fill":"white",
-              "font-family":"Helvetica Neue, Helvetica, Arial, san-serif",
-              "font-size": "12px"
-            });
-          })
+         var root = d3.hierarchy({children: data})
+         .sum(function(d) { return d.value; })
+
+         var node = svg.selectAll(".node")
+         .data(pack(root).leaves())
+         .enter().append("g")
+         .attr("class", "node")
+         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+
+         node.append("circle")
+         .attr("id", function(d) { return d.id; })
+         .attr("r", function(d) { return d.r; })
+         .style("fill", function(d) { return color(d.data.value); })
+         .on("mouseover", function(d) {
+           div.transition()
+           .duration(200)
+           .style("opacity", .9);
+
+           var duration = 300;
+           data.forEach(function(d, i) {
+             console.log(d.value);
+             node.transition().duration(duration).delay(i * duration)
+             .attr("r", d.value);
+           });
+
+
+           div.html("Number of Records: <br>"+d.data.records  )
+           .style("left", (d3.event.pageX) + "px")
+           .style("top", (d3.event.pageY - 28) + "px");
+         })
+         .on("mouseout", function(d) {
+           div.transition()
+           .duration(500)
+           .style("opacity", 0);
+         });
+
+
+
+         node.append("text")
+         .text(function(d) {
+             return d.data.neighborhood;
+           return "";});
+
+         node.append("text")
+         .text(function(d) {
+             return d.data.value;
+           return "";});
+
+
+           var legend = svg.selectAll(".legend")
+           .data(data).enter()
+           .append("g")
+           .attr("class","legend")
+           .attr("transform");
+
+
+           legend.append("rect")
+           .attr("x", 0)
+           .attr("y", function(d, i) { return 20 * i; })
+           .attr("width", 15)
+           .attr("height", 15)
+		         .style("fill", function(d) { return color(d.value)});
+             });
+
       </script>
 
     </div>
