@@ -101,8 +101,127 @@
   <section class="section">
     <div class="container content">
       <!-- todo: modify as necessary (or move visualizations to separate pages) -->
+      <svg width="960" height="500" text-anchor="middle"></svg>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+      <script>
+        var svg = d3.select("svg"),
+        width = +svg.attr("width"),
+        height = +svg.attr("height");
 
-      <img src="prototypes/yen_prototype.png" alt="prototype" width="100%" height="100%">
+        // Define the div for the tooltip
+        var div = d3.select("body").append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0);
+
+        svg.append("text")
+        .attr("x", 100)
+        .attr("y", 20 )
+        .attr("dy", "3.5em" )
+        .attr("text-anchor", "start")
+        .style("font-size", "28px")
+  	     .style("font-weight", "bold")
+         .text("Highest Number of Alarm in each Neighborhood")
+
+         var pack = d3.pack()
+         .size([width-150, height])
+         .padding(1.5);
+
+         d3.csv("yen_data.csv", function(d) {
+           d.value = +d["Number_of_Alarms"];
+           d.Call_Type = d["Neighborhoods"]
+
+ 	         return d;
+         }, function(error, data) {
+           if (error) throw error;
+
+
+           var color = d3.scaleOrdinal()
+           .domain(data.map(function(d){ return d.Number_of_Alarms;}))
+           .range(['#fbb4ae','#b3cde3','#ccebc5','#decbe4','#fed9a6',
+           '#ffe9a8','#b9bfe3','#fddaec','#cccccc']);
+
+           var root = d3.hierarchy({children: data})
+           .sum(function(d) { return d.value; })
+
+           var node = svg.selectAll(".node")
+           .data(pack(root).leaves())
+           .enter().append("g")
+           .attr("class", "node")
+           .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+
+           node.append("circle")
+           .attr("id", function(d) { return d.id; })
+           .attr("r", function(d) { return d.r; })
+           .style("fill", function(d) { return color(d.data.Number_of_Alarms); })
+           .on("mouseover", function(d) {
+             div.transition()
+             .duration(200)
+             .style("opacity", .9);
+
+             var duration = 300;
+             data.forEach(function(d, i) {
+               console.log(d.value);
+               node.transition().duration(duration).delay(i * duration)
+               .attr("r", d.value);
+             });
+
+
+             div.html(d.data.Number + ": <br>"+d.data.value  )
+             .style("left", (d3.event.pageX) + "px")
+             .style("top", (d3.event.pageY - 28) + "px");
+           })
+           .on("mouseout", function(d) {
+             div.transition()
+             .duration(500)
+             .style("opacity", 0);
+           });
+
+
+
+           node.append("text")
+           .text(function(d) {
+               return d.data.Number_of_Alarms;
+             }
+             return "";});
+
+
+
+             var legend = svg.selectAll(".legend")
+             .data(data).enter()
+             .append("g")
+             .attr("class","legend")
+             .attr("transform", "translate(" + 780 + "," + 120+ ")");
+
+
+             legend.append("rect")
+             .attr("x", 0)
+             .attr("y", function(d, i) { return 20 * i; })
+             .attr("width", 15)
+             .attr("height", 15)
+		           .style("fill", function(d) { return color(d.Number_of_Alarms)});
+
+
+               legend.append("text")
+               .attr("x", 25)
+    	          .attr("text-anchor", "start")
+                .attr("dy", "1em")
+                .attr("y", function(d, i) { return 20 * i; })
+                .text(function(d) {return d.Number_of_Alarms;})
+                .attr("font-size", "12px");
+
+
+                legend.append("text")
+                .attr("x",31)
+                .attr("dy", "-.2em")
+                .attr("y",-10)
+                .text("Call Type")
+  	             .attr("font-size", "17px");
+
+
+
+               });
+      </script>
 
     </div>
   </section>
