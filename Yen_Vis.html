@@ -218,7 +218,13 @@
              .attr("font-size", function(d){
                  return d.r/5;
              })
-             .attr("fill", "black");
+             .style("fill", function(d){
+               if (d.data.neighborhood == "Chinatown" || d.data.neighborhood == "Russian Hill") {
+                 return "white"
+               } else {
+                 return "black"
+               }
+             });
        });
       </script>
     </div>
