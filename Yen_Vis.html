@@ -165,18 +165,26 @@
          .attr("r", function(d) { return d.r; })
          .style("fill", function(d) { return color(d.data.value); })
          .on("mouseover", function(d) {
-             div.transition()
-                 .duration(200)
-                 .style("opacity", .9);
-             div.html("Number of Records: <br/>"  + d.data.records)
-                .style("left", (d3.event.pageX) + "px")
-                .style("top", (d3.event.pageY - 28) + "px");
-              })
-         .on("mouseout", function(d) {
-            div.transition()
-            .duration(500)
-            .style("opacity", 0);
-         });
+       div.transition()
+         .duration(200)
+         .style("opacity", .9);
+
+         var duration = 300;
+     data.forEach(function(d, i) {
+       console.log(d.value);
+       node.transition().duration(duration).delay(i * duration)
+           .attr("r", d.value);
+   });
+
+       div.html("Number of Records: <br>"+d.data.records  )
+         .style("left", (d3.event.pageX) + "px")
+         .style("top", (d3.event.pageY - 28) + "px");
+     })					
+       .on("mouseout", function(d) {
+       div.transition()
+         .duration(500)
+         .style("opacity", 0);
+     });
 
          node.append("text")
              .attr("dy", ".2em")
