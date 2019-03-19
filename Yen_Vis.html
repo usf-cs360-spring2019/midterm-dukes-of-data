@@ -195,7 +195,23 @@
            .attr("width", 15)
            .attr("height", 15)
 		         .style("fill", function(d) { return color(d.value)});
-             });
+
+
+           legend.append("text")
+           .attr("x", 25)
+    	     .attr("text-anchor", "start")
+           .attr("dy", "1em")
+           .attr("y", function(d, i) { return 20 * i; })
+           .text(function(d) {return d.value;})
+           .attr("font-size", "12px");
+
+
+           legend.append("text")
+           .attr("x",31)
+           .attr("dy", "-.2em")
+           .attr("y",-10)
+           .text("Call Type")
+  	       .attr("font-size", "17px");
       </script>
 
     </div>
