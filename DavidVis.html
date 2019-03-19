@@ -1,123 +1,329 @@
 <!DOCTYPE html>
-<html>
-
-<!-- head -->
 <head>
+
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <title>CS 360/560 Spring 2019</title>
-
-  <!-- bulma 0.7.2 and font awesome v5.7.1 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" integrity="sha256-2pUeJf+y0ltRPSbKOeJh09ipQFYxUdct5nTY6GAXswA=" crossorigin="anonymous" />
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  <link href="style.css" rel="stylesheet" type="text/css">
+  <script src="https://d3js.org/d3.v3.min.js"></script>
+  <script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+  <script src="colorbrewer.js"></script>
+  <script src="heatmap.js"></script>
+  <script src ="index2.html"></script>
 </head>
 
-<!-- body -->
 <body>
 
-  <!-- header -->
-  <section class="hero is-primary is-bold">
-    <!-- todo: change assignment and name -->
-    <div class="hero-body">
-      <div class="container">
-        <h1 class="title">
-          Nico's Visualization
-        </h1>
-      </div>
-    </div>
+<script>
 
-    <!-- todo: change navigation as needed -->
-    <div class="hero-foot">
-      <div class="container">
-        <nav class="navbar" role="navigation" aria-label="main navigation">
-
-          <div class="navbar-brand">
-            <a class="navbar-item" href="index.html">
-              <span class="icon">
-                <i class="fas fa-home"></i>
-              </span>
-              <span>Home</span>
-            </a>
-          </div>
-
-          <a class="navbar-item" href="DavidVis.html">
-            <span class="icon">
-              <i class="fas fa-chart-area"></i>
-            </span>
-            <span>David's Vis</span>
-          </a>
-
-          <a class="navbar-item" href="Yen_Vis.html">
-            <span class="icon">
-              <i class="fas fa-chart-area"></i>
-            </span>
-            <span>Highest Number of Alarm</span>
-          </a>
-
-          <a class="navbar-item" href="Nico_Vis.html">
-            <span class="icon">
-              <i class="fas fa-chart-area"></i>
-            </span>
-            <span>Nico's Vis</span>
-          </a>
-
-          <a class="navbar-item" href="Kim_Vis.html">
-              <span class="icon">
-                <i class="fas fa-chart-area"></i>
-              </span>
-              <span>Kim's Vis</span>
-          </a>
-
-          <a class="navbar-item" href="prototypes.html">
-              <span class="icon">
-                <i class="fas fa-chart-area"></i>
-              </span>
-              <span>Prototypes</span>
-          </a>
-
-          <div class="navbar-end">
-            <a class="navbar-item" href="dataAndProcessing.html">
-              <span class="icon">
-                <i class="fas fa-tasks"></i>
-              </span>
-              <span>D&P</span>
-            </a>
-
-            <a class="navbar-item" href="About.html">
-              <span class="icon">
-                <i class="fas fa-info-circle"></i>
-              </span>
-              <span>About</span>
-            </a>
-          </div>
-
-        </nav>
-      </div>
-    </div>
-  </section>
-<hr class="container">
+var translate = function(x, y) { return "translate(" + x + "," + y + ")"; };
 
 
-  <!-- footer -->
-  <footer class="footer">
-    <div class="content has-text-centered">
-      <small>
-        <a href="#top">
-          <span class="fas fa-arrow-up"></span>
-          <span>Back to Top</span>
-        </a>
-        <br/>
-        <a href="/">CS 360/560 Data Visualization</a>
-        &bullet;
-        <a href="https://myusf.usfca.edu/arts-sciences/computer-science">Department of Computer Science</a>
-        &bullet;
-        <a href="https://www.usfca.edu/">University of San Franciscio</a>
-      </small>
-    </div>
-  </footer>
+var config = {};
+var domain;
+config.svg = {width: 960, height: 700}; //to be changed
+config.margin = { top: 50, right: 10, bottom: 100, left: 100};
 
-<!-- end body and html -->
+config.plot = {
+  width: config.svg.width - config.margin.right - config.margin.left,
+  height: config.svg.height - config.margin.top - config.margin.bottom
+};
+
+config.legend = {
+  width: 100,
+  height: 15
+};
+
+
+var svg = d3.select("body").append("svg")
+  .attr("width", config.svg.width)
+  .attr("height", config.svg.height);
+
+
+var plot = svg.append("g")
+  .attr("id", "plot")
+  .attr("transform", translate(config.margin.left, config.margin.top));
+
+var xScale = d3.scale.ordinal()
+  .rangeBands([0, config.plot.width], 0, 0);
+
+var yScale = d3.scale.ordinal()
+  .rangeBands([config.plot.height, 0], 0, 0);
+
+
+var colorScale = d3.scale.linear()
+  .range(colorbrewer.Spectral[3].reverse());
+
+
+  var tip = d3.tip()
+    .attr('class', 'd3-tip')
+    .offset([10, 0])
+    .html(function(d) {
+      return "<strong>Value:</strong> <span style='color:red'>" + d.value.toFixed(3); +"</span>";
+    })
+
+
+
+svg.call(tip);
+var data = [];
+
+d3.csv("Fire_Department7.csv",
+  function(row) {
+    var out = { values: [] };
+
+    for (var col in row) {
+      switch(col) {
+
+
+        case "Call Final Disposition":
+      //  console.log("hi ", row[col])
+        var name = row[col]
+          out[col] = row[col];
+
+          break;
+        //  case "super_opeid":
+          //out[col] =parseInt(row[col]);
+          //break;
+          case "Respond":
+          var value = parseFloat(row[col]);
+          //console.log(value)
+          break;
+        default:
+        //var value = parseFloat(row[col]);
+        //console.log(value);
+        //console.log(row[col])
+        out.values.push({name: name, value:value, field:row[col]})
+        //console.log(field);
+          break;
+      }
+    }
+    return out;
+  },
+  function(error, rows) {
+    if (error) {
+      console.warn(error);
+    }
+
+
+    data = rows.filter(function(row) {
+
+      return row;
+
+    });
+
+
+    var names = data.map(function(row) { return row["Call Final Disposition"]; });
+  domain =["Chinatown","Nob Hill","North Beach","Russian Hill","Tenderloin",]
+
+//console.log("here")
+    xScale.domain(domain)
+    yScale.domain(names);
+
+  //  console.log(names)
+
+    var values = data.map(function(d) {
+
+    //console.log(d["Call Final Disposition"],"d values1", d.values)
+      return d.values;
+    });
+    //console.log("here")
+    values = d3.merge(values);
+    //console.log(values)
+    values = values.map(function(d) { return d.value; });
+    //console.log(values)
+    //console.log("number of values:", values.length);
+
+
+    colorScale.domain([0, 3, 6]);
+
+    function type(d) {
+      console.log(d.value)
+      d.value = +d.value;
+      return d;
+    }
+
+    drawBackground();
+    drawAxes();
+    drawHeatmap();
+    drawTitle();
+    drawLegend();
+});
+
+var drawBackground = function() {
+  plot.append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", config.plot.width)
+    .attr("height", config.plot.height)
+    .style("fill", "white");
+};
+
+
+var drawAxes = function() {
+  var xAxis = d3.svg.axis()
+    .scale(xScale)
+    .orient("bottom")
+    .tickPadding(0)
+
+
+  var yAxis = d3.svg.axis()
+    .scale(yScale)
+    .orient("left")
+    .tickPadding(0);
+
+  plot.append("g")
+    .attr("id", "x-axis")
+    .attr("class", "axis")
+    .attr("transform", translate(0, config.plot.height))
+    .call(xAxis);
+
+  plot.append("g")
+    .attr("id", "y-axis")
+    .attr("class", "axis")
+    .call(yAxis);
+};
+
+
+var drawHeatmap = function() {
+  var rows = plot.append("g")
+    .attr("id", "heatmap")
+    .attr("class", "cell")
+    .selectAll("g")
+    .data(data)
+    .enter()
+    .append("g")
+    .attr("id", function(d) {
+    //  console.log(d["super_opeid"])
+      return "id-" + d["super_opeid"];
+    })
+    .attr("transform", function(d) {
+      //console.log(d["super_opeid"])
+      return translate(0, yScale(d["Call Final Disposition"]));
+    });
+
+  var cells = rows.selectAll("rect")
+    .data(function(d) {
+//console.log("s5s", d.values)
+      return d.values; })
+    .enter()
+    .append("rect")
+    .attr("x", function(d) {
+    //  console.log( d)
+      return xScale(d.field); })
+    .attr("y", 0)
+    .attr("width", xScale.rangeBand())
+    .attr("height", yScale.rangeBand())
+    .on('mouseover', tip.show)
+    .on('mouseout', tip.hide)
+
+    .style("fill", function(d) {
+      //console.log(d.value)
+
+      return colorScale(d.value);
+    });
+};
+
+
+var drawTitle = function() {
+  var title = svg.append("text")
+    .text(" fire department calls")
+    .attr("id", "title")
+    .attr("x", config.margin.left)
+    .attr("y", 0)
+    .attr("dx", 0)
+    .attr("dy", "18px")
+    .attr("text-anchor", "left")
+    .attr("font-size", "18px");
+
+
+  var bounds = title.node().getBBox();
+  var yshift = (config.margin.top - bounds.height) / 2;
+  title.attr("transform", translate(0, yshift));
+};
+
+
+var drawLegend = function() {
+
+  var percentScale = d3.scale.linear()
+    .domain(d3.extent(colorScale.domain()))
+    .rangeRound([0, 100]);
+
+
+  svg.append("defs")
+    .append("linearGradient")
+    .attr("id", "gradient")
+    .selectAll("stop")
+    .data(colorScale.domain())
+    .enter()
+    .append("stop")
+    .attr("offset", function(d) {
+      return "" + percentScale(d) + "%";
+    })
+    .attr("stop-color", function(d) {
+      return colorScale(d);
+    });
+    svg.append("text")
+           .attr("x", (1/ 10))
+           .attr("y", 640 - (1 / 2))
+           .attr("text-anchor", "start")
+           .style("font-size", "12px")
+           .text("David Mendez: This heatmap represents the time it takes for the operator to send the call from the time he or she receives the call to where unit responds.");
+
+           svg.append("text")
+                  .attr("x", (1/ 10))
+                  .attr("y", 657 - (1 / 2))
+                  .attr("text-anchor", "start")
+                  .style("font-size", "12px")
+                  .text("More clearly: the value is the time that it takes for the department to respond depending on the Neighborhood and the Final Call Dispoision." );
+
+                  svg.append("text")
+                         .attr("x", (1/ 10))
+                         .attr("y", 674 - (1 / 2))
+                         .attr("text-anchor", "start")
+                         .style("font-size", "12px")
+                         .text("The Neighborhoods choosen were choosen becasue of their rank as the higher ranked neighborhoods based on population. This visualization shows that there isnt a real pattern" );
+
+                         svg.append("text")
+                                .attr("x", (1/ 10))
+                                .attr("y", 691 - (1 / 2))
+                                .attr("text-anchor", "start")
+                                .style("font-size", "12px")
+                                .text("when it comes to the respond times based on the final call disposition, however it does look like the respond times are affected by the neighborhoods somewhat more" );
+
+
+
+
+
+  var legend = svg.append("g")
+    .attr("id", "legend");
+  legend.append("rect")
+    .attr("x", 0)
+    .attr("y", 0)
+    .attr("width", config.legend.width)
+    .attr("height", config.legend.height)
+    .attr("fill", "url(#gradient)");
+
+
+  var legendScale = d3.scale.linear()
+    .domain(percentScale.domain())
+    .range([0, config.legend.width]);
+
+  var legendAxis = d3.svg.axis()
+    .scale(legendScale)
+    .orient("bottom")
+    .innerTickSize(4)
+    .outerTickSize(4)
+    .tickPadding(4)
+    .tickValues(colorScale.domain());
+
+  legend.append("g")
+    .attr("id", "color-axis")
+    .attr("class", "legend")
+    .attr("transform", translate(0, config.legend.height))
+    .call(legendAxis)
+  var bounds = legend.node().getBBox();
+  var xshift = config.svg.width - bounds.width;
+  var yshift = (config.margin.top - bounds.height) / 2;
+  legend.attr("transform", translate(xshift, yshift));
+};
+
+</script>
 </body>
-</html>
-
