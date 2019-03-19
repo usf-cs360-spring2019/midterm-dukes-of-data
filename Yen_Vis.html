@@ -187,9 +187,7 @@
          .domain([0,10])
          .range(["#FFD700", "#FF0000"]);
 
-         var svg = d3.select("svg");
-
-         svg.append("g")
+         node.append("g")
          .attr("class", "legendLinear")
          .attr("transform", "translate(20,20)");
 
@@ -198,7 +196,7 @@
          .orient('horizontal')
          .scale(linear);
 
-         svg.select(".legendLinear")
+         node.select(".legendLinear")
          .call(legendLinear);
        });
       </script>
