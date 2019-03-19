@@ -101,122 +101,80 @@
   <section class="section">
     <div class="container content">
       <!-- todo: modify as necessary (or move visualizations to separate pages) -->
-      <style>
-        svg {
-          font: 16px"Avenir";
-        }
-        div.tooltip {
-          position: absolute;
-          text-align: center;
-          width: 60px;
-          height: 45px;
-          padding: 2px;
-          font: 12px sans-serif;
-          background: lightsteelblue;
-          border: 0px;
-          border-radius: 8px;
-          pointer-events: none;
-        }
-      </style>
       <script src="https://d3js.org/d3.v4.min.js"></script>
       <script>
-      var margin = {top: 10, right: 30, bottom: 30, left: 70},
-          width = 960 - margin.left - margin.right,
-          height = 500 - margin.top - margin.bottom;
-        var svg = d3.select("body").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-          .append("g")
-            .attr("transform",
-                  "translate(" + margin.left + "," + margin.top + ")");
-      // Define the div for the tooltip
-      var div = d3.select("body").append("div")
-      .attr("class", "tooltip")
-      .style("opacity", 0);
-      svg.append("text")
-      .attr("x", 100)
-      .attr("y", 20 )
-      .attr("dy", "3.5em" )
-      .attr("text-anchor", "start")
-      .style("font-size", "28px")
-  	   .style("font-weight", "bold")
-       .text("Highest Number of Alarms for each Neighborhood")
+          // set the dimensions and margins of the graph
+          var margin = {top: 50, right: 20, bottom: 30, left: 75},
+              width = 960 - margin.left - margin.right,
+              height = 500 - margin.top - margin.bottom;
 
-       var pack = d3.pack()
-       .size([width-150, height])
-       .padding(1.5);
+          // set the ranges
+          var x = d3.scaleBand()
+                    .range([0, width])
+                    .padding(0.1);
+          var y = d3.scaleLinear()
+                    .range([height, 0]);
 
-       d3.csv("yen_data.csv", function(d) {
-         d.value = +d["Max_Number_of_Alarms"];
-         d.neighborhood = d["Neighborhoods"];
-         d.records = d["Number_of_Records"];
- 	       return d;
-       }, function(error, data) {
-         if (error) throw error;
+          // append the svg object to the body of the page
+          // append a 'group' element to 'svg'
+          // moves the 'group' element to the top left margin
+          var svg = d3.select("body").append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+              .attr("transform",
+                    "translate(" + margin.left + "," + margin.top + ")");
 
-         var color = d3.scaleOrdinal()
-         .domain(data.map(function(d){ return d.value;}))
-         .range(['#FFD700','#FF0000']);
+          // get the data
+          d3.csv("yen_data.csv").then(function(data) {
+            console.log(data);
 
-         var root = d3.hierarchy({children: data})
-         .sum(function(d) { return d.value; })
+            // format the data
+            data.forEach(function(d) {
+              d.Number_of_Records = +d.Number_of_Records;
+            });
 
-         var node = svg.selectAll(".node")
-         .data(pack(root).leaves())
-         .enter().append("g")
-         .attr("class", "node")
-         .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+            // Scale the range of the data in the domains
+            x.domain(data.map(function(d) { return d.Number_of_Records; }));
+            y.domain([0, d3.max(data, function(d) { return d.Neighborhoods; })]);
 
-         node.append("circle")
-         .attr("id", function(d) { return d.id; })
-         .attr("r", function(d) { return d.r; })
-         .style("fill", function(d) { return color(d.data.value); })
-         .on("mouseover", function(d) {
-           div.transition()
-           .duration(200)
-           .style("opacity", .9);
+            // append the rectangles for the bar chart
+            svg.selectAll(".bar1")
+                .data(data)
+              .enter().append("rect")
+                .attr("class", "bar1")
+                .attr("x", function(d) { return x(d.Number_of_Records); })
+                .attr("width", x.bandwidth())
+                .attr("y", function(d) { return y(d.Neighborhoods); })
+                .attr("height", function(d) { return height - y(d.Number_of_Records); });
 
-           var duration = 300;
-           data.forEach(function(d, i) {
-             console.log(d.value);
-             node.transition().duration(duration).delay(i * duration)
-             .attr("r", d.value);
-           });
+            // add x axis label
+            svg.append("text")
+              .attr("x", width / 2 )
+              .attr("y",  height + margin.top - 490)
+              .style("text-anchor", "middle")
+              .text("Neighborhoods");
 
-           div.html("Number of Records: <br>"+d.data.records  )
-           .style("left", (d3.event.pageX) + "px")
-           .style("top", (d3.event.pageY - 28) + "px");
-         })
-         .on("mouseout", function(d) {
-           div.transition()
-           .duration(500)
-           .style("opacity", 0);
-         });
+            // add y axis label
+            svg.append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 0 - margin.left)
+              .attr("x",0 - (height / 2))
+              .attr("dy", "2em")
+              .style("text-anchor", "middle")
+              .text("Number of Records");
 
-         node.append("text")
-         .text(function(d) {
-             return d.data.neighborhood;
-           return "";});
+            // add the x Axis
+            svg.append("g")
+                .attr("transform", "translate(0," + height + ")")
+                .call(d3.axisBottom(x));
 
-         node.append("text")
-         .text(function(d) {
-             return d.data.value;
-           return "";});
+            // add the y Axis
+            svg.append("g")
+                .call(d3.axisLeft(y).tickFormat(d3.format(".2s")));
 
-           var legend = svg.selectAll(".legend")
-           .data(data).enter()
-           .append("g")
-           .attr("class","legend")
-           .attr("transform");
-
-           legend.append("rect")
-           .attr("x", 0)
-           .attr("y", function(d, i) { return 20 * i; })
-           .attr("width", 15)
-           .attr("height", 15)
-		         .style("fill", function(d) { return color(d.value)});
-             });
-      </script>
+          });
+        </script>
 
     </div>
   </section>
