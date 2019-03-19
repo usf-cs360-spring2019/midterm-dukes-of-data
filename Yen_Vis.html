@@ -101,9 +101,13 @@
   <section class="section">
     <div class="container content">
       <!-- todo: modify as necessary (or move visualizations to separate pages) -->
+      <h1>
+        Highest Number of Alarm for each Neighborhood
+      </h1>
+      
       <script src="https://d3js.org/d3.v4.min.js"></script>
       <script>
-      var margin = {top: 10, right: 30, bottom: 100, left: 70},
+      var margin = {top: 10, right: 30, bottom: 30, left: 70},
           width = 960 - margin.left - margin.right,
           height = 500 - margin.top - margin.bottom;
 
@@ -113,6 +117,17 @@
         .append("g")
           .attr("transform",
                 "translate(" + margin.left + "," + margin.top + ")");
+      // Define the div for the tooltip
+      var div = d3.select("body").append("div")
+      .attr("class", "tooltip")
+      .style("opacity", 0);
+      svg.append("text")
+      .attr("x", 100)
+      .attr("y", 20 )
+      .attr("dy", "3.5em" )
+      .attr("text-anchor", "start")
+      .style("font-size", "28px")
+  	   .style("font-weight", "bold")
 
        var pack = d3.pack()
        .size([width-150, height])
@@ -168,8 +183,7 @@
          node.append("text")
          .text(function(d) {
              return d.data.neighborhood;
-           return "";})
-           .style("font-size: 12px");
+           return "";});
 
          node.append("text")
          .text(function(d) {
