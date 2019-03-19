@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-
+<html>
 
 
 <head>
@@ -8,13 +8,105 @@
   <link href="style2.css" rel="stylesheet" type="text/css">
   <script src="https://d3js.org/d3.v3.min.js"></script>
 
-
+<title>CS 360/560 Spring 2019</title>
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" integrity="sha256-2pUeJf+y0ltRPSbKOeJh09ipQFYxUdct5nTY6GAXswA=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+  
+  
   <link href="https://fonts.googleapis.com/css?family=Roboto:300,300italic" rel="stylesheet" type="text/css">
   <script src="https://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
 
 </head>
 
 <body>
+  <!-- header -->
+  <section class="hero is-primary is-bold">
+    
+    <div class="hero-body">
+      <div class="container">
+        <h1 class="title">
+          Response time per neighborhood and Final Call
+        </h1>
+      </div>
+    </div>
+
+    <!-- todo: change navigation as needed -->
+    <div class="hero-foot">
+      <div class="container">
+        <nav class="navbar" role="navigation" aria-label="main navigation">
+
+          <div class="navbar-brand">
+            <a class="navbar-item" href="index.html">
+              <span class="icon">
+                <i class="fas fa-home"></i>
+              </span>
+              <span>Home</span>
+            </a>
+          </div>
+
+          <a class="navbar-item" href="DavidVis.html">
+            <span class="icon">
+              <i class="fas fa-chart-area"></i>
+            </span>
+            <span>Response Time</span>
+          </a>
+        <a class="navbar-item" href="DavidVis2.html">
+            <span class="icon">
+              <i class="fas fa-chart-area"></i>
+            </span>
+            <span>Calls per Disposition</span>
+          </a>
+          <a class="navbar-item" href="Yen_Vis.html">
+            <span class="icon">
+              <i class="fas fa-chart-area"></i>
+            </span>
+            <span>Highest Num. of Alarms</span>
+          </a>
+
+          <a class="navbar-item" href="Nico_Vis.html">
+            <span class="icon">
+              <i class="fas fa-chart-area"></i>
+            </span>
+            <span>Average Response Time</span>
+          </a>
+
+          <div id="main-navbar" class="navbar-menu">
+            <a class="navbar-item" href="Kim_Vis.html">
+              <span class="icon">
+                <i class="fas fa-chart-area"></i>
+              </span>
+              <span>Kim's Vis</span>
+            </a>
+          </div>
+          
+           <a class="navbar-item" href="prototypes.html">
+              <span class="icon">
+                <i class="fas fa-chart-area"></i>
+              </span>
+              <span>Prototypes</span>
+          </a>
+
+          <div class="navbar-end">
+            <a class="navbar-item" href="dataAndProcessing.html">
+              <span class="icon">
+                <i class="fas fa-tasks"></i>
+              </span>
+              <span>D&P</span>
+            </a>
+
+            <a class="navbar-item" href="About.html">
+              <span class="icon">
+                <i class="fas fa-info-circle"></i>
+              </span>
+              <span>About</span>
+            </a>
+          </div>
+
+        </nav>
+      </div>
+    </div>
+  </section>
+
 <svg></svg>
   <script src="https://d3js.org/d3.v5.min.js"></script>
 
@@ -294,3 +386,49 @@
 </script>
 
   </body>
+
+  
+   </div>
+  </section>
+
+
+<section class="section">
+    <div class="content">
+    <h3>Interpretation</h3>
+    <p>
+     David Mendez: David Mendez: This shows the number of calls made per each final call disposition designation. In this case colors do not represent anything in particular we can easily see how the vast majority of calls are about Code 2 transport which refers to an important but non time critical transportation with fire taking the second spot with half as many total calls, and all others following that, its hard to see but Duplicate amounts to 15 and CHP to 8
+    </p>
+
+
+  </div>
+  </section>
+
+
+  <!-- separator between sections -->
+  <hr class="container">
+
+
+
+
+
+  <!-- footer -->
+  <footer class="footer">
+    <div class="content has-text-centered">
+      <small>
+        <a href="#top">
+          <span class="fas fa-arrow-up"></span>
+          <span>Back to Top</span>
+        </a>
+        <br/>
+        <a href="/">CS 360/560 Data Visualization</a>
+        &bullet;
+        <a href="https://myusf.usfca.edu/arts-sciences/computer-science">Department of Computer Science</a>
+        &bullet;
+        <a href="https://www.usfca.edu/">University of San Franciscio</a>
+      </small>
+    </div>
+  </footer>
+
+<!-- end body and html -->
+</body>
+</html>
