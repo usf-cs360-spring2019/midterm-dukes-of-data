@@ -191,18 +191,6 @@
              .attr("fill", "black");
            }
 
-           node.append("text")
-               .attr("dy", ".2em")
-               .style("text-anchor", "middle")
-               .text(function(d) {
-                   return d.data.specialnb;
-               })
-               .attr("font-size", function(d){
-                   return d.r/5;
-               })
-               .attr("fill", "white");
-             }
-
          node.append("text")
              .attr("dy", "1.3em")
              .style("text-anchor", "middle")
