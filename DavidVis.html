@@ -304,7 +304,7 @@ var drawHeatmap = function() {
     .attr("width", xScale.rangeBand())
     .attr("height", yScale.rangeBand())
     .on('mouseover', tip.show)
-    .on('mouseout', tip.hide)
+    //.on('mouseout', tip.hide)
 
     .style("fill", function(d) {
       //console.log(d.value)
