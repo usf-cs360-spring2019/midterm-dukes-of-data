@@ -144,7 +144,7 @@
     let margin = {
       top:    15,
       right:  100,
-      bottom: 300,
+      bottom: 100,
       left:   50
     };
     let bounds = svg.node().getBoundingClientRect();
@@ -322,28 +322,7 @@
                    .attr("text-anchor", "middle")
                    .style("font-size", "16px")
                    .text("Number of Calls based on the Final Disposition");
-                   svg.append("text")
-                          .attr("x", (1/ 10))
-                          .attr("y", 600 - (1 / 2))
-                          .attr("text-anchor", "start")
-                          .style("font-size", "12px")
-                          .text("David Mendez: This shows the number of calls made per each final call disposition designation. In this case colors do not represent anything in particular");
-
-                          svg.append("text")
-                                 .attr("x", (1/ 10))
-                                 .attr("y", 619 - (1 / 2))
-                                 .attr("text-anchor", "start")
-                                 .style("font-size", "12px")
-                                 .text("we can easily see how the vast majority of calls are about Code 2 transport which refers to an important but non time critical transportation with fire taking");
-
-                                 svg.append("text")
-                                        .attr("x", (1/ 10))
-                                        .attr("y", 638 - (1 / 2))
-                                        .attr("text-anchor", "start")
-                                        .style("font-size", "12px")
-                                        .text("the second spot with half as many total calls, and all others following that, its hard to see but Duplicate amounts to 15 and CHP to 8");
-
-
+                   
 
 
 
