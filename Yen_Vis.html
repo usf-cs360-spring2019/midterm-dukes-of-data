@@ -55,7 +55,7 @@
           </a>
 
 
-          <a class="navbar-item" href="Yen_Vis.html">
+          <a class="navbar-item" href="#top">
             <span class="icon">
               <i class="fas fa-chart-area"></i>
             </span>
@@ -119,9 +119,9 @@
         position: absolute;
         text-align: center;
         width: 150px;
-        height: 40px;
+        height: 45px;
         padding: 5px;
-        font: 12px sans-serif;
+        font-size: 12px;
         color: white;
         background: #232F34;
         border: 0px;
@@ -180,7 +180,8 @@
          .attr("id", function(d) { return d.id; })
          .attr("r", function(d) { return d.r; })
          .style("fill", function(d) { return color(d.data.value); })
-         .on("mouseover", function(d) {=
+         .on("mouseover", function(d) {
+           div.transition()
            .duration(200)
            .style("opacity", .95);
            div.html("Number of Records: <br/>" + d.data.records)
