@@ -179,9 +179,26 @@
          });
 
          node.append("text")
-         .text(function(d) {
-             return d.data.neighborhood + "\n" + d.data.value;
-           return "";});
+             .attr("dy", ".2em")
+             .style("text-anchor", "middle")
+             .text(function(d) {
+                 return d.data.neighborhood;
+             })
+             .attr("font-size", function(d){
+                 return d.r/5;
+             })
+             .attr("fill", "black");
+
+         node.append("text")
+             .attr("dy", "1.3em")
+             .style("text-anchor", "middle")
+             .text(function(d) {
+                 return d.data.value;
+             })
+             .attr("font-size", function(d){
+                 return d.r/5;
+             })
+             .attr("fill", "black");
        });
       </script>
 
